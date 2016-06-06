@@ -34,7 +34,9 @@ The pre-build Virtual Machines can be downloaded from [PCextreme](https://www.pc
 
 URL: https://42on.o.auroraobjects.eu/training/ipv6-training-vms.tar
 
-If you prefer to build the images from source, please take a look at the *[Building](#Building)* section below.
+If you prefer to build the images from source, please take a look at the '[Building](#Building)' section below.
+
+**NOTE:** Changes are being made to this images on regular basis. You might want to re-download them to have the latest version of these images.
 
 # Configure VirtualBox
 Before you can inport the Virtual Machines you have to make sure that a *Host-Only* network is created.
