@@ -29,6 +29,13 @@ To run this Virtual Machines you need to match the following requirements:
 - 10GB of free diskspace
 - 2GB of memory
 
+# Download
+The pre-build Virtual Machines can be downloaded from [PCextreme](https://www.pcextreme.com/)'s [Aurora Objects](https://www.pcextreme.com/aurora/objects):
+
+URL: https://42on.o.auroraobjects.eu/training/ipv6-training-vms.tar
+
+If you prefer to build the images from source, please take a look at the *[Building](#Building)* section below.
+
 # Configure VirtualBox
 Before you can inport the Virtual Machines you have to make sure that a *Host-Only* network is created.
 
