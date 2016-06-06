@@ -2,3 +2,6 @@
 *.qcow2
 *packer_cache*
 *packer_output*
+*.ovf
+*.vmdk
+*.tar*
