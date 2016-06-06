@@ -1,0 +1,90 @@
+{
+    "builders":
+    [
+        {
+            "type": "virtualbox-iso",
+            "guest_os_type": "Ubuntu_64",
+            "iso_url": "http://nl3.releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
+            "iso_checksum": "23e97cd5d4145d4105fbf29878534049",
+            "iso_checksum_type": "md5",
+            "output_directory": "packer_output",
+            "ssh_wait_timeout": "30s",
+            "shutdown_command": "shutdown -P now",
+            "disk_size": 2048,
+            "hard_drive_interface": "sata",
+            "format": "ovf",
+            "headless": true,
+            "http_directory": "../../packer/preseed",
+            "http_port_min": 10082,
+            "http_port_max": 10089,
+            "ssh_host_port_min": 2222,
+            "ssh_host_port_max": 2229,
+            "ssh_username": "root",
+            "ssh_password": "ipv6test",
+            "ssh_port": 22,
+            "ssh_wait_timeout": "90m",
+            "vm_name": "ipv6router",
+            "boot_wait": "15s",
+            "boot_command":
+            [
+                "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "/install/vmlinuz<wait>",
+                " auto<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " console-setup/layoutcode=us<wait>",
+                " console-setup/modelcode=SKIP<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " debian-installer=en_US<wait>",
+                " fb=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " kbd-chooser/method=us<wait>",
+                " keyboard-configuration/layout=USA<wait>",
+                " keyboard-configuration/variant=USA<wait>",
+                " locale=en_US<wait>",
+                " noapic<wait>",
+                " netcfg/get_hostname=ipv6router<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu1604.cfg ",
+                " -- <wait>",
+                "<enter><wait>"
+            ]
+        }
+    ],
+    "provisioners":
+    [
+        {
+            "type": "file",
+            "source": "files/unbound/forward.conf",
+            "destination": "/tmp/unbound.forward.conf"
+        },
+        {
+            "type": "file",
+            "source": "files/radvd/radvd.conf",
+            "destination": "/tmp/radvd.conf"
+        },
+        {
+            "type": "file",
+            "source": "files/apache2/proxy.conf",
+            "destination": "/tmp/apache.proxy.conf"
+        },
+        {
+            "type": "file",
+            "source": "files/sysctl/ipv6.conf",
+            "destination": "/etc/sysctl.d/90-ipv6.conf"
+        },
+        {
+            "type": "shell",
+            "scripts": [
+                "scripts/01-packages.sh",
+                "scripts/02-network.sh",
+                "scripts/20-unbound.sh",
+                "scripts/30-radvd.sh",
+                "scripts/40-apache2.sh",
+                "scripts/99-cleanup.sh"
+            ],
+            "execute_command": "sh '{{.Path}}'"
+        }
+    ]
+}
